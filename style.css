@@ -1,0 +1,30 @@
+/* Custom CSS for styling */
+
+body {
+    padding-top: 20px;
+}
+
+#hero {
+    background-color: #f8f9fa;
+    padding: 100px 0;
+}
+
+#hero h1 {
+    margin-bottom: 20px;
+}
+
+#projects h2 {
+    margin-bottom: 30px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+#contact {
+    margin-bottom: 100px;
+}
+
+footer {
+    background-color: #f8f9fa;
+}

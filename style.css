@@ -13,6 +13,29 @@ body {
     color: #fff;
 }
 
+@media (max-width: 767px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 50px;
+        right: -100%;
+        bottom: auto;
+        left: auto;
+        width: 150px;
+        background-color: #f8f9fa;
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+    }
+
+    .navbar-collapse.show {
+        right: 0;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
+        z-index: 1001; /* Add this line to ensure the button remains on top */
+    }
+}
+
 .jumbotron {
     background-color: #0d6efd;
     color: #fff;

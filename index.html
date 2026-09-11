@@ -1,98 +1,1758 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abbas Aziz</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abbas Aziz / Platform Engineer</title>
+<meta name="description" content="Platform Engineer. Kubernetes, Terraform, AWS, observability. Remote contracts for US and UK startups." />
 
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A2540'/><text x='50' y='68' font-size='54' font-family='monospace' fill='white' text-anchor='middle'>A</text></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   TOKENS
+   Four colors only: black, white, grey, dark blue
+   ============================================================ */
+:root{
+  --bg:#FFFFFF;
+  --fg:#0B0F14;
+  --muted:#6B7280;
+  --line:#E6E8EB;
+  --surface:#F7F8FA;
+  --accent:#0A2540;
+  --accent-soft:#EEF3F9;
+  --shadow:0 1px 2px rgba(11,15,20,.04), 0 8px 24px rgba(11,15,20,.06);
+}
+[data-theme="dark"]{
+  --bg:#0B0F14;
+  --fg:#F0F2F5;
+  --muted:#8B949E;
+  --line:#1E252E;
+  --surface:#11161C;
+  --accent:#7FB0FF;
+  --accent-soft:#141E2B;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.4);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:14.5px;
+  line-height:1.75;
+  font-weight:400;
+  letter-spacing:-.01em;
+  transition:background .25s ease, color .25s ease;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--accent);color:var(--bg);}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:0;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.wrap{max-width:940px;margin:0 auto;padding:0 24px;}
+section{padding:104px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+.label{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;margin:0 0 28px;
+  display:flex;align-items:center;gap:12px;
+}
+.label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+h1,h2,h3,h4{font-weight:500;line-height:1.25;letter-spacing:-.03em;margin:0;}
+h2{font-size:clamp(22px,3.4vw,30px);margin-bottom:20px;}
+h3{font-size:16px;margin-bottom:8px;}
+p{margin:0 0 16px;color:var(--fg);}
+.lead{font-size:15.5px;color:var(--muted);max-width:66ch;}
+.muted{color:var(--muted);}
+.small{font-size:12.5px;}
+
+/* ============================================================
+   PROGRESS + NAV
+   ============================================================ */
+#progress{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:var(--accent);z-index:200;transition:width .1s linear;
+}
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .3s;
+}
+.nav.scrolled{border-bottom-color:var(--line);}
+.nav-inner{
+  max-width:940px;margin:0 auto;padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{font-weight:700;font-size:14px;letter-spacing:-.02em;}
+.brand span{color:var(--accent);}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{
+  font-size:12.5px;color:var(--muted);transition:color .2s;position:relative;
+}
+.nav-links a:hover{color:var(--fg);}
+.nav-links a.active{color:var(--fg);}
+.nav-links a.active::before{content:"/ ";color:var(--accent);}
+.nav-tools{display:flex;gap:8px;align-items:center;}
+
+.icon-btn{
+  width:32px;height:32px;display:grid;place-items:center;
+  border:1px solid var(--line);background:transparent;color:var(--fg);
+  cursor:pointer;font-family:inherit;font-size:13px;border-radius:2px;
+  transition:all .2s;
+}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+.kbd{
+  font-size:11px;border:1px solid var(--line);padding:2px 6px;border-radius:3px;
+  color:var(--muted);background:var(--surface);
+}
+.menu-btn{display:none;}
+
+@media(max-width:760px){
+  .nav-links{
+    position:fixed;inset:57px 0 auto 0;background:var(--bg);
+    border-bottom:1px solid var(--line);flex-direction:column;
+    align-items:flex-start;padding:16px 24px 24px;gap:14px;
+    transform:translateY(-130%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-links.open{transform:translateY(0);}
+  .menu-btn{display:grid;}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#home{padding-top:150px;min-height:100vh;display:flex;align-items:center;}
+.hero-grid{display:grid;gap:48px;grid-template-columns:1fr;width:100%;}
+.terminal{
+  border:1px solid var(--line);background:var(--surface);
+  border-radius:4px;overflow:hidden;box-shadow:var(--shadow);
+}
+.term-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  border-bottom:1px solid var(--line);background:var(--bg);
+}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);}
+.dot.a{background:var(--muted);}
+.term-title{font-size:11px;color:var(--muted);margin-left:auto;letter-spacing:.06em;}
+.term-body{padding:22px 20px;font-size:13.5px;line-height:2;min-height:250px;}
+.term-body .p{color:var(--accent);}
+.term-body .c{color:var(--fg);}
+.term-body .o{color:var(--muted);}
+.cursor{
+  display:inline-block;width:8px;height:15px;background:var(--accent);
+  vertical-align:-2px;animation:blink 1s steps(2,start) infinite;
+}
+@keyframes blink{to{visibility:hidden;}}
+
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+.chip{
+  font-size:11.5px;border:1px solid var(--line);padding:5px 11px;
+  border-radius:100px;color:var(--muted);transition:all .2s;cursor:default;
+}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.status{
+  display:inline-flex;align-items:center;gap:8px;font-size:11.5px;
+  color:var(--muted);border:1px solid var(--line);padding:5px 12px;
+  border-radius:100px;
+}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);position:relative;}
+.pulse::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:var(--accent);animation:ripple 2s ease-out infinite;
+}
+@keyframes ripple{0%{transform:scale(1);opacity:.7;}100%{transform:scale(3.5);opacity:0;}}
+
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;}
+.btn{
+  font-family:inherit;font-size:12.5px;padding:10px 18px;border-radius:2px;
+  border:1px solid var(--fg);background:var(--fg);color:var(--bg);
+  cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-1px);}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line);}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-1px);}
+
+.scroll-hint{
+  margin-top:56px;font-size:11px;color:var(--muted);
+  letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px;
+}
+.scroll-hint::after{content:"";width:40px;height:1px;background:var(--line);}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);}
+.rv.in{opacity:1;transform:none;}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+.stat{background:var(--bg);padding:26px 20px;transition:background .2s;}
+.stat:hover{background:var(--surface);}
+.stat-num{font-size:28px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--accent);}
+.stat-lab{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5;}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;border-bottom:1px solid var(--line);padding-bottom:0;}
+.tab{
+  font-family:inherit;font-size:12px;padding:8px 14px;background:transparent;
+  border:none;border-bottom:2px solid transparent;color:var(--muted);
+  cursor:pointer;transition:all .2s;margin-bottom:-1px;
+}
+.tab:hover{color:var(--fg);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.tags{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  font-size:12px;border:1px solid var(--line);padding:6px 12px;border-radius:2px;
+  background:var(--surface);transition:all .2s;cursor:default;
+}
+.tag:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+
+/* ============================================================
+   TIMELINE / ACCORDION
+   ============================================================ */
+.acc{border-top:1px solid var(--line);}
+.acc-item{border-bottom:1px solid var(--line);}
+.acc-head{
+  width:100%;background:transparent;border:none;font-family:inherit;color:inherit;
+  display:flex;align-items:flex-start;gap:16px;padding:22px 0;cursor:pointer;
+  text-align:left;transition:padding .2s;
+}
+.acc-head:hover{padding-left:6px;}
+.acc-head:hover .acc-role{color:var(--accent);}
+.acc-num{font-size:11px;color:var(--muted);padding-top:3px;min-width:26px;}
+.acc-main{flex:1;}
+.acc-role{font-size:14.5px;font-weight:500;transition:color .2s;letter-spacing:-.02em;}
+.acc-co{font-size:12.5px;color:var(--muted);margin-top:3px;}
+.acc-date{font-size:11.5px;color:var(--muted);white-space:nowrap;padding-top:3px;}
+.acc-sign{font-size:16px;color:var(--muted);transition:transform .3s;line-height:1;padding-top:2px;}
+.acc-item.open .acc-sign{transform:rotate(45deg);color:var(--accent);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);}
+.acc-inner{padding:0 0 26px 42px;}
+.acc-inner ul{margin:0;padding:0;list-style:none;}
+.acc-inner li{
+  position:relative;padding-left:18px;margin-bottom:9px;font-size:13px;color:var(--muted);line-height:1.75;
+}
+.acc-inner li::before{content:"→";position:absolute;left:0;color:var(--accent);}
+.acc-inner li strong{color:var(--fg);font-weight:500;}
+
+/* ============================================================
+   CARDS / PROJECTS
+   ============================================================ */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+.filters .tab{border:1px solid var(--line);border-radius:2px;margin:0;}
+.filters .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.card{
+  border:1px solid var(--line);background:var(--bg);padding:24px 22px;border-radius:3px;
+  transition:all .25s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.card:hover::before{transform:scaleX(1);}
+.card:hover{border-color:var(--muted);transform:translateY(-4px);box-shadow:var(--shadow);}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.card h3{font-size:15px;}
+.card p{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:16px;flex:1;}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.card-tags span{font-size:10.5px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:100px;}
+.card-link{font-size:12px;color:var(--accent);display:inline-flex;align-items:center;gap:6px;transition:gap .2s;font-weight:500;}
+.card-link:hover{gap:10px;}
+.badge{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);padding:3px 8px;border-radius:2px;white-space:nowrap;
+}
+.badge.live{color:var(--accent);border-color:var(--accent);background:var(--accent-soft);}
+.card.placeholder{border-style:dashed;opacity:.72;}
+.card.placeholder:hover{opacity:1;}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;}
+.quote{
+  border:1px solid var(--line);border-left:2px solid var(--accent);
+  padding:24px 22px;background:var(--surface);border-radius:3px;transition:all .25s;
+}
+.quote:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+.quote p{font-size:13px;line-height:1.85;color:var(--fg);font-style:italic;margin-bottom:18px;}
+.quote-by{font-size:12px;font-weight:500;}
+.quote-role{font-size:11.5px;color:var(--muted);margin-top:2px;}
+
+/* ============================================================
+   MILESTONES
+   ============================================================ */
+.miles{position:relative;padding-left:0;}
+.mile{
+  display:grid;grid-template-columns:88px 1fr;gap:20px;padding:18px 0;
+  border-bottom:1px dashed var(--line);transition:padding .2s;
+}
+.mile:last-child{border-bottom:none;}
+.mile:hover{padding-left:6px;}
+.mile-yr{font-size:12px;color:var(--accent);font-weight:500;padding-top:2px;}
+.mile-t{font-size:13.5px;font-weight:500;margin-bottom:4px;}
+.mile-d{font-size:12.5px;color:var(--muted);line-height:1.7;}
+
+/* ============================================================
+   FIT TABLE
+   ============================================================ */
+.fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+.fit-cell{background:var(--bg);padding:24px 22px;transition:background .2s;}
+.fit-cell:hover{background:var(--surface);}
+.fit-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-weight:500;}
+.fit-cell p{font-size:12.5px;color:var(--muted);line-height:1.8;margin:0;}
+.fit-cell strong{color:var(--fg);font-weight:500;}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:32px;}
+.link-cell{
+  background:var(--bg);padding:22px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;transition:all .2s;cursor:pointer;
+}
+.link-cell:hover{background:var(--accent-soft);}
+.link-cell:hover .link-arrow{transform:translateX(4px);color:var(--accent);}
+.link-name{font-size:13px;font-weight:500;}
+.link-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.link-arrow{color:var(--muted);transition:all .2s;font-size:14px;}
+
+footer{padding:48px 0;border-top:1px solid var(--line);}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center;font-size:11.5px;color:var(--muted);}
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+.cmd-wrap{
+  position:fixed;inset:0;z-index:300;display:none;
+  align-items:flex-start;justify-content:center;padding-top:14vh;
+  background:color-mix(in srgb, var(--fg) 32%, transparent);
+  backdrop-filter:blur(4px);
+}
+.cmd-wrap.open{display:flex;animation:fade .15s ease;}
+.cmd{
+  width:min(560px,92vw);background:var(--bg);border:1px solid var(--line);
+  border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;
+}
+.cmd-input{
+  width:100%;border:none;border-bottom:1px solid var(--line);background:transparent;
+  padding:18px 20px;font-family:inherit;font-size:14px;color:var(--fg);outline:none;
+}
+.cmd-input::placeholder{color:var(--muted);}
+.cmd-list{max-height:320px;overflow-y:auto;padding:8px;}
+.cmd-item{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:2px;
+  cursor:pointer;font-size:13px;transition:background .12s;
+}
+.cmd-item.sel{background:var(--accent-soft);}
+.cmd-item.sel .cmd-k{color:var(--accent);}
+.cmd-k{font-size:11px;color:var(--muted);margin-left:auto;}
+.cmd-ico{width:16px;text-align:center;color:var(--muted);font-size:12px;}
+
+/* ============================================================
+   MODAL / RESUME
+   ============================================================ */
+.modal{
+  position:fixed;inset:0;z-index:400;display:none;align-items:flex-start;justify-content:center;
+  padding:5vh 16px;background:color-mix(in srgb, var(--fg) 45%, transparent);
+  backdrop-filter:blur(6px);overflow-y:auto;
+}
+.modal.open{display:flex;animation:fade .2s ease;}
+.modal-card{
+  width:min(820px,100%);background:var(--bg);border:1px solid var(--line);
+  border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.32);overflow:hidden;
+}
+.modal-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 20px;border-bottom:1px solid var(--line);background:var(--surface);
+  position:sticky;top:0;z-index:2;
+}
+.modal-title{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.modal-actions{display:flex;gap:8px;}
+.modal-body{padding:36px 40px 44px;}
+
+/* Resume typography */
+#resume{color:var(--fg);}
+#resume h1{font-size:26px;letter-spacing:-.04em;margin-bottom:6px;}
+#resume .r-sub{font-size:13px;color:var(--accent);margin-bottom:6px;}
+#resume .r-meta{font-size:11.5px;color:var(--muted);margin-bottom:28px;line-height:1.9;}
+#resume h2{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+  margin:30px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);font-weight:500;
+}
+#resume h2:first-of-type{margin-top:0;}
+#resume p{font-size:12.5px;line-height:1.8;color:var(--muted);}
+#resume .r-role{margin-bottom:20px;}
+#resume .r-role-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline;}
+#resume .r-role-title{font-size:13.5px;font-weight:500;color:var(--fg);}
+#resume .r-role-date{font-size:11.5px;color:var(--muted);white-space:nowrap;}
+#resume .r-role-co{font-size:12px;color:var(--accent);margin:3px 0 10px;}
+#resume ul{margin:0;padding:0;list-style:none;}
+#resume li{position:relative;padding-left:16px;font-size:12.5px;color:var(--muted);line-height:1.8;margin-bottom:6px;}
+#resume li::before{content:"·";position:absolute;left:4px;color:var(--accent);font-weight:700;}
+#resume li strong{color:var(--fg);font-weight:500;}
+#resume .r-tags{display:flex;flex-wrap:wrap;gap:6px;}
+#resume .r-tags span{font-size:11px;border:1px solid var(--line);padding:3px 9px;border-radius:2px;color:var(--muted);}
+#resume .r-two{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:640px){
+  #resume .r-two{grid-template-columns:1fr;}
+  .modal-body{padding:26px 22px 34px;}
+}
+
+@media print{
+  body>*:not(#resume-modal){display:none !important;}
+  #resume-modal{position:static;display:block !important;background:#fff;padding:0;backdrop-filter:none;}
+  .modal-card{box-shadow:none;border:none;width:100%;max-width:100%;}
+  .modal-bar{display:none !important;}
+  .modal-body{padding:0;}
+  #resume h2{color:#000;}
+  #resume .r-sub{color:#000;}
+  @page{margin:16mm;}
+}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px);
+  background:var(--fg);color:var(--bg);font-size:12.5px;padding:11px 20px;
+  border-radius:3px;z-index:500;opacity:0;pointer-events:none;transition:all .3s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media(max-width:640px){
+  body{font-size:14px;}
+  section{padding:72px 0;}
+  .wrap{padding:0 18px;}
+  .nav-inner{padding:14px 18px;}
+  #home{padding-top:120px;}
+  .term-body{font-size:12.5px;padding:18px 16px;}
+  .acc-inner{padding-left:0;}
+  .acc-date{display:none;}
+  .mile{grid-template-columns:64px 1fr;gap:12px;}
+}
+</style>
 </head>
-
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Abbas Aziz</a>
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About Me</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#resume">Resume</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
-    <section id="hero" class="jumbotron text-center">
-    <h1 class="display-4">Hi, I'm Abbas Aziz</h1>
-    <p class="lead">Frontend Developer | WordPress Expert | UI/UX Designer</p>
-    <p>I build fast, modern, SEO-optimized websites using WordPress, React, and custom HTML/CSS/JS. Let’s create something impactful together.</p>
-    <a href="#projects" class="btn btn-primary">View Projects</a>
-    <a href="#contact" class="btn btn-secondary ml-2">Hire Me</a>
-</section>
+<div id="progress"></div>
 
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#home" class="brand">abbas<span>.</span>aziz</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#work">work</a>
+      <a href="#projects">projects</a>
+      <a href="#apps">apps</a>
+      <a href="#proof">proof</a>
+      <a href="#fit">fit</a>
+      <a href="#contact">contact</a>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn" id="cmdOpen" title="Command palette (Ctrl K)" aria-label="Open command palette">⌘</button>
+      <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">≡</button>
+    </div>
+  </div>
+</header>
 
-    <section id="projects" class="container">
-        <h2>Projects</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Coffee Shop App</h3>
-                            <p class="card-text">
-                                🚀 Built a full-stack CoffeeShop app using Flask, PostgreSQL, React, and TypeScript<br>
-                                🧪 Deployed via AWS (EC2, Docker, Kubernetes), scaling to thousands of users<br>
-                                ⚙️ Unit-tested components and implemented CI/CD pipeline
-                            </p>
+<main>
 
-                        <a href="https://github.com/abbasaziz" class="btn btn-secondary">GitHub Repository</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more project cards as needed -->
+<!-- ================= HERO ================= -->
+<section id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="terminal rv">
+        <div class="term-bar">
+          <span class="dot a"></span><span class="dot"></span><span class="dot"></span>
+          <span class="term-title">abbas@platform ~ %</span>
         </div>
-    </section>
+        <div class="term-body" id="termBody"></div>
+      </div>
 
-    <section id="about" class="container">
-    <h2>About Me</h2>
-    <p>I’m a Frontend & WordPress Developer with 4+ years of experience crafting responsive, conversion-focused websites. I specialize in:</p>
-    <ul>
-        <li>✅ Custom WordPress development (Elementor, WooCommerce)</li>
-        <li>✅ Fast, mobile-friendly UI using HTML, CSS, JS, and React</li>
-        <li>✅ Optimized SEO & Core Web Vitals</li>
-        <li>✅ Fully remote collaboration across time zones</li>
-    </ul>
-    <p>I’ve worked with UK, US, and Singapore-based companies to deliver websites that don’t just look great — they perform. Let’s connect!</p>
+      <div class="hero-meta rv" style="margin-top:22px;">
+        <span class="status"><span class="pulse"></span> Available for contract work</span>
+        <span class="chip">UTC+5 · PKT</span>
+        <span class="chip">US / UK overlap</span>
+      </div>
+
+      <div class="hero-cta rv">
+        <a href="#contact" class="btn">Start a conversation →</a>
+        <button class="btn ghost" id="resumeBtn">View resume</button>
+      </div>
+
+      <div class="scroll-hint rv">Scroll</div>
+    </div>
+  </div>
 </section>
 
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="label rv">01 / About</div>
+    <h2 class="rv">I build the infrastructure that lets teams ship without breaking production.</h2>
+    <p class="lead rv" style="margin-bottom:28px;">
+      I started as a full-stack developer in 2019. Five years later, I work across the whole stack,
+      from React interfaces to Kubernetes clusters. I care about systems that are reliable, observable,
+      and cheap to run. I also care about the people using them.
+    </p>
 
-    <section id="resume" class="container">
-    <h2>Resume</h2>
-    <a href="resume.pdf" download class="btn btn-primary">Download Resume (PDF)</a>
-    <a href="https://www.linkedin.com/in/abbasaziz" class="btn btn-secondary ml-2" target="_blank">LinkedIn</a>
-    <a href="https://github.com/abbasaziz" class="btn btn-secondary ml-2" target="_blank">GitHub</a>
+    <p class="lead rv">
+      Most of my work has been with small teams in the UK, US, and Singapore. Small teams do not have
+      room for guesswork. Every decision has to earn its place. That constraint shaped how I work:
+      document everything, automate the repetitive parts, and never let infrastructure become
+      someone else's surprise at 2am.
+    </p>
+
+    <div class="stats rv" style="margin-top:44px;">
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-lab">Years shipping<br>production software</div></div>
+      <div class="stat"><div class="stat-num">100s</div><div class="stat-lab">Freelance clients<br>served since 2019</div></div>
+      <div class="stat"><div class="stat-num">22%</div><div class="stat-lab">Cloud spend reduced<br>on last engagement</div></div>
+      <div class="stat"><div class="stat-num">3→25</div><div class="stat-lab">Monthly conversions<br>after CRM rebuild</div></div>
+    </div>
+  </div>
 </section>
 
-    <section id="contact" class="container">
-    <h2>Contact</h2>
-        <p><strong>Email:</strong> <a href="mailto:azizsardarabbas@gmail.com">azizsardarabbas@gmail.com</a></p>
-        <p><strong>Phone (WhatsApp):</strong> +92 311 0556636</p>
-        <p><strong>Location:</strong> Pakistan (working remotely with US/UK clients)</p>
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="label rv">02 / Skills</div>
+    <h2 class="rv">The toolkit.</h2>
+    <p class="lead rv" style="margin-bottom:32px;">
+      Grouped by what it does, not by how impressive it sounds.
+    </p>
+
+    <div class="tabs rv" id="skillTabs">
+      <button class="tab active" data-panel="p-infra">Infrastructure</button>
+      <button class="tab" data-panel="p-orch">Orchestration</button>
+      <button class="tab" data-panel="p-obs">Observability</button>
+      <button class="tab" data-panel="p-del">Delivery</button>
+      <button class="tab" data-panel="p-lang">Languages</button>
+      <button class="tab" data-panel="p-data">Data</button>
+      <button class="tab" data-panel="p-auto">Automation</button>
+      <button class="tab" data-panel="p-sys">Systems</button>
+    </div>
+
+    <div class="rv">
+      <div class="panel active" id="p-infra">
+        <div class="tags">
+          <span class="tag">AWS</span><span class="tag">EC2</span><span class="tag">EKS</span>
+          <span class="tag">RDS</span><span class="tag">VPC</span><span class="tag">IAM</span>
+          <span class="tag">S3</span><span class="tag">Route 53</span><span class="tag">GCP</span>
+          <span class="tag">Azure</span><span class="tag">Terraform</span><span class="tag">Pulumi</span>
+          <span class="tag">Ansible</span><span class="tag">Infrastructure as Code</span>
+          <span class="tag">Cost optimization</span><span class="tag">Vercel</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-orch">
+        <div class="tags">
+          <span class="tag">Kubernetes</span><span class="tag">Docker</span><span class="tag">Helm</span>
+          <span class="tag">Helm charts</span><span class="tag">Container orchestration</span>
+          <span class="tag">RBAC</span><span class="tag">Network policies</span>
+          <span class="tag">HPA</span><span class="tag">Pod disruption budgets</span>
+          <span class="tag">Istio</span><span class="tag">Linkerd</span><span class="tag">Minikube</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-obs">
+        <div class="tags">
+          <span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Loki</span>
+          <span class="tag">OpenTelemetry</span><span class="tag">Jaeger</span><span class="tag">AlertManager</span>
+          <span class="tag">SLO</span><span class="tag">SLI</span><span class="tag">SLA</span>
+          <span class="tag">Error budgets</span><span class="tag">Dashboards</span>
+          <span class="tag">Incident response</span><span class="tag">Blameless post-mortems</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-del">
+        <div class="tags">
+          <span class="tag">GitHub Actions</span><span class="tag">GitLab CI</span><span class="tag">Jenkins</span>
+          <span class="tag">ArgoCD</span><span class="tag">FluxCD</span><span class="tag">GitOps</span>
+          <span class="tag">Canary deploys</span><span class="tag">Blue-green deploys</span>
+          <span class="tag">Rolling updates</span><span class="tag">Rollbacks</span>
+          <span class="tag">Trivy</span><span class="tag">SonarQube</span><span class="tag">HashiCorp Vault</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-lang">
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span>
+          <span class="tag">SQL</span><span class="tag">Bash</span><span class="tag">Go (working)</span>
+          <span class="tag">Rust (working)</span><span class="tag">React</span><span class="tag">Next.js</span>
+          <span class="tag">Node.js</span><span class="tag">Flask</span><span class="tag">Django</span>
+          <span class="tag">HTML / CSS</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-data">
+        <div class="tags">
+          <span class="tag">PostgreSQL</span><span class="tag">MongoDB</span><span class="tag">Redis</span>
+          <span class="tag">MySQL</span><span class="tag">Prisma</span><span class="tag">Schema design</span>
+          <span class="tag">Query optimization</span><span class="tag">Backups & recovery</span>
+          <span class="tag">Data pipelines</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-auto">
+        <div class="tags">
+          <span class="tag">n8n</span><span class="tag">Zapier</span><span class="tag">Webhooks</span>
+          <span class="tag">REST APIs</span><span class="tag">Third-party integrations</span>
+          <span class="tag">Workflow automation</span><span class="tag">LLM integration</span>
+          <span class="tag">Model deployment</span><span class="tag">MLOps (learning)</span>
+          <span class="tag">Custom GPTs</span>
+        </div>
+      </div>
+
+      <div class="panel" id="p-sys">
+        <div class="tags">
+          <span class="tag">Linux</span><span class="tag">Ubuntu</span><span class="tag">Systemd</span>
+          <span class="tag">Nginx</span><span class="tag">HAProxy</span><span class="tag">Networking</span>
+          <span class="tag">SSH</span><span class="tag">Server hardening</span>
+          <span class="tag">Bare-metal setup</span><span class="tag">Git</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-    <footer class="bg-light text-center py-3">
-        <p>&copy; 2023 Abbas Aziz Portfolio. All rights reserved.</p>
-    </footer>
+<!-- ================= WORK ================= -->
+<section id="work">
+  <div class="wrap">
+    <div class="label rv">03 / Experience</div>
+    <h2 class="rv">Where I have worked.</h2>
+    <p class="lead rv" style="margin-bottom:36px;">
+      Click any role to expand the detail.
+    </p>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="acc rv" id="acc">
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">01</span>
+          <span class="acc-main">
+            <span class="acc-role">Platform Engineer / Technical Operations</span>
+            <span class="acc-co">Deen Removals and Storage · London, UK · Remote</span>
+          </span>
+          <span class="acc-date">Aug 2024 → Present</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Sole owner of internal systems and cloud infrastructure for a fully remote UK logistics company.</li>
+              <li>Designed, built, and shipped a <strong>custom CRM</strong> covering lead capture, sales pipeline, and customer communication.</li>
+              <li>Rebuilt inbound lead handling and follow-up workflows, lifting monthly conversions from <strong>2 to 3 up to 20 to 25</strong>.</li>
+              <li>Built and maintained CI/CD pipelines, containerized services, and cloud deployments on AWS.</li>
+              <li>Introduced monitoring and alerting, cutting time to detect production issues from minutes to under a minute.</li>
+              <li>Onboarded and supported new sales reps, wrote SOPs, and documented every workflow so the business runs without me.</li>
+              <li>Acted as the technical point of contact for the founder across systems, delivery, and vendor decisions.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">02</span>
+          <span class="acc-main">
+            <span class="acc-role">Technical Operations and Delivery Manager</span>
+            <span class="acc-co">Works · Singapore · Remote</span>
+          </span>
+          <span class="acc-date">Aug 2023 → Aug 2024</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Owned delivery of internal product features end to end, coordinating requirements, timelines, and execution across technical and non-technical stakeholders.</li>
+              <li>Led implementation of operational workflows for recruitment and contract management.</li>
+              <li>Acted as the bridge between engineering, product, and business to keep features shipping on schedule.</li>
+              <li>Reduced manual handling across recruiting operations by redesigning internal UI flows and backend coordination.</li>
+              <li>Supported system scalability through backend coordination, database structuring, and deployment workflow improvements.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">03</span>
+          <span class="acc-main">
+            <span class="acc-role">Full Stack Delivery Engineer</span>
+            <span class="acc-co">Spec Digital · London, UK · Remote</span>
+          </span>
+          <span class="acc-date">Nov 2022 → Dec 2023</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Delivered client projects end to end, translating business needs into shipped features across multiple stakeholders.</li>
+              <li>Containerized a monolithic application into services using Docker, cutting image size from roughly <strong>1.2GB to 350MB</strong> with multi-stage builds.</li>
+              <li>Deployed to AWS EC2 and ECS using CodePipeline and CodeBuild, with automated rollback on failed health checks.</li>
+              <li>Improved API response times from roughly <strong>420ms to 180ms</strong> through query optimization, indexing, and connection pooling.</li>
+              <li>Supported conversion initiatives through A/B testing and frontend performance work.</li>
+              <li>Transitioned into infrastructure ownership in the final months, taking on Kubernetes and Terraform work.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">04</span>
+          <span class="acc-main">
+            <span class="acc-role">Junior Developer</span>
+            <span class="acc-co">Spec Digital · London, UK · Remote</span>
+          </span>
+          <span class="acc-date">Feb 2021 → Nov 2022</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Built backend services with Django, Flask, and REST APIs, and frontends with React.</li>
+              <li>Designed database models in PostgreSQL and MongoDB for the backend team.</li>
+              <li>Worked hands-on with microservices, Docker, Git, and AWS services including EC2, ECS, CodeBuild, and CodePipeline.</li>
+              <li>Reduced app loading time by <strong>14 percent</strong> after moving the application to a properly provisioned cloud environment.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">05</span>
+          <span class="acc-main">
+            <span class="acc-role">Junior Web Developer</span>
+            <span class="acc-co">Psilocybin Alpha · New York, USA · Remote · Contract</span>
+          </span>
+          <span class="acc-date">Sep 2019 → Jan 2021</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Built full-stack features with Django, Flask, REST APIs, jQuery, and React.</li>
+              <li>Worked extensively with SQL, PostgreSQL, and MongoDB on data modeling.</li>
+              <li>Gained first production exposure to Docker, Git, AWS, and Microsoft Azure.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-head">
+          <span class="acc-num">06</span>
+          <span class="acc-main">
+            <span class="acc-role">Web Development Intern</span>
+            <span class="acc-co">United States · Remote</span>
+          </span>
+          <span class="acc-date">Jul 2019 → Sep 2019</span>
+          <span class="acc-sign">+</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <ul>
+              <li>Contributed to content creation and technical maintenance of the company website.</li>
+              <li>Improved the frontend UI using CSS3 and HTML5.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="small muted rv" style="margin-top:32px;">
+      Since 2019 I have also worked as an independent contractor for hundreds of clients
+      across Pakistan, the UK, the US, and the Gulf, mostly on web applications,
+      automations, and internal tooling.
+    </p>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="label rv">04 / Projects</div>
+    <h2 class="rv">Things I have built.</h2>
+    <p class="lead rv" style="margin-bottom:32px;">
+      Products, platforms, and client systems. Filter by type.
+    </p>
+
+    <div class="filters rv" id="projFilters">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="product">Products</button>
+      <button class="tab" data-filter="platform">Platform</button>
+      <button class="tab" data-filter="client">Client work</button>
+      <button class="tab" data-filter="side">Side SaaS</button>
+    </div>
+
+    <div class="grid rv" id="projGrid">
+
+      <div class="card" data-type="product client">
+        <div class="card-top">
+          <h3>MoverSync</h3>
+          <span class="badge live">Live</span>
+        </div>
+        <p>
+          A smart CRM SaaS built for UK removals and logistics companies. Handles lead intake,
+          survey scheduling, quoting, crew assignment, and customer comms in one place.
+          Born from a real operational rebuild that lifted monthly conversions from 3 to 25.
+        </p>
+        <div class="card-tags">
+          <span>Next.js</span><span>Node</span><span>PostgreSQL</span><span>AWS</span><span>SaaS</span>
+        </div>
+        <a class="card-link" href="https://moversync.co.uk" target="_blank" rel="noopener">moversync.co.uk →</a>
+      </div>
+
+      <div class="card" data-type="platform">
+        <div class="card-top">
+          <h3>DevOps / SRE Platform Lab</h3>
+          <span class="badge">Open source</span>
+        </div>
+        <p>
+          A working reference lab covering the full platform stack: Kubernetes, Helm charts,
+          Terraform modules, ArgoCD GitOps, Prometheus and Grafana observability, SLO and error
+          budget definitions, canary and blue-green rollouts with Slack alerting.
+        </p>
+        <div class="card-tags">
+          <span>Kubernetes</span><span>Terraform</span><span>Helm</span><span>ArgoCD</span><span>Prometheus</span>
+        </div>
+        <a class="card-link" href="https://github.com/abbasaziz" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+
+      <div class="card" data-type="client product">
+        <div class="card-top">
+          <h3>Custom CRM for UK Logistics</h3>
+          <span class="badge">Shipped</span>
+        </div>
+        <p>
+          End-to-end CRM built from scratch for a London removals company. Centralized leads,
+          sales activity, and customer communication. Replaced spreadsheets and manual tracking.
+          Monthly conversions went from 2 to 3 up to 20 to 25 within four months.
+        </p>
+        <div class="card-tags">
+          <span>Full stack</span><span>PostgreSQL</span><span>AWS</span><span>CI/CD</span>
+        </div>
+        <span class="card-link muted">Internal system</span>
+      </div>
+
+      <div class="card" data-type="side">
+        <div class="card-top">
+          <h3>Manufacturing Ops Suite</h3>
+          <span class="badge">In development</span>
+        </div>
+        <p>
+          A SaaS for small and mid-sized Pakistani manufacturers. Handles production tracking,
+          order management, inventory, and client communication. Built for businesses that
+          currently run on WhatsApp and paper registers.
+        </p>
+        <div class="card-tags">
+          <span>Multi-tenant</span><span>Node</span><span>PostgreSQL</span><span>WhatsApp API</span>
+        </div>
+        <span class="card-link muted">Coming soon</span>
+      </div>
+
+      <div class="card" data-type="side">
+        <div class="card-top">
+          <h3>SMB Toolkit</h3>
+          <span class="badge">In development</span>
+        </div>
+        <p>
+          A lightweight operations suite for Pakistani small business owners. Invoicing,
+          customer records, expense tracking, and automated payment reminders. Designed to work
+          on low bandwidth and low-end Android devices.
+        </p>
+        <div class="card-tags">
+          <span>PWA</span><span>Offline-first</span><span>React</span><span>Node</span>
+        </div>
+        <span class="card-link muted">Coming soon</span>
+      </div>
+
+      <div class="card" data-type="client">
+        <div class="card-top">
+          <h3>Workflow Automation Systems</h3>
+          <span class="badge">Shipped</span>
+        </div>
+        <p>
+          A collection of automation systems built for clients across logistics, recruitment,
+          and services. Lead routing, follow-up sequences, document generation, and
+          cross-tool synchronization using n8n, Zapier, and custom API integrations.
+        </p>
+        <div class="card-tags">
+          <span>n8n</span><span>Zapier</span><span>REST APIs</span><span>Webhooks</span>
+        </div>
+        <span class="card-link muted">Multiple clients</span>
+      </div>
+
+      <div class="card" data-type="platform">
+        <div class="card-top">
+          <h3>Cloud Cost Optimization Playbook</h3>
+          <span class="badge">Open source</span>
+        </div>
+        <p>
+          Terraform modules and audit scripts that find waste in AWS accounts. Orphaned EBS
+          volumes, idle load balancers, over-provisioned RDS instances, and unused Elastic IPs.
+          Used to cut one client's monthly cloud bill by roughly 22 percent.
+        </p>
+        <div class="card-tags">
+          <span>Terraform</span><span>AWS</span><span>Python</span><span>FinOps</span>
+        </div>
+        <a class="card-link" href="https://github.com/abbasaziz" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+
+      <div class="card" data-type="client product">
+        <div class="card-top">
+          <h3>Recruitment Operations Platform</h3>
+          <span class="badge">Shipped</span>
+        </div>
+        <p>
+          Internal tooling for a Singapore recruitment company. Contract management, candidate
+          pipeline, and recruiter workflow tooling. Reduced manual handling by redesigning
+          UI flows and backend coordination.
+        </p>
+        <div class="card-tags">
+          <span>React</span><span>Node</span><span>MongoDB</span><span>Microservices</span>
+        </div>
+        <span class="card-link muted">Internal system</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= APPS ================= -->
+<section id="apps">
+  <div class="wrap">
+    <div class="label rv">05 / Apps</div>
+    <h2 class="rv">Shipped apps.</h2>
+    <p class="lead rv" style="margin-bottom:32px;">
+      This section will fill up as products go live. Each card links to the live app and the write-up.
+    </p>
+
+    <div class="grid rv">
+      <div class="card placeholder">
+        <div class="card-top"><h3>App slot 01</h3><span class="badge">Reserved</span></div>
+        <p>Reserved for the first live product. Will include a live link, screenshots, and a short build write-up.</p>
+        <div class="card-tags"><span>Coming soon</span></div>
+      </div>
+      <div class="card placeholder">
+        <div class="card-top"><h3>App slot 02</h3><span class="badge">Reserved</span></div>
+        <p>Reserved for the second live product.</p>
+        <div class="card-tags"><span>Coming soon</span></div>
+      </div>
+      <div class="card placeholder">
+        <div class="card-top"><h3>App slot 03</h3><span class="badge">Reserved</span></div>
+        <p>Reserved for the third live product.</p>
+        <div class="card-tags"><span>Coming soon</span></div>
+      </div>
+    </div>
+
+    <p class="small muted rv" style="margin-top:28px;">
+      To add a real app, duplicate one of the cards above, remove the <code>placeholder</code>
+      class, and fill in the title, description, tags, and link.
+    </p>
+  </div>
+</section>
+
+<!-- ================= PROOF ================= -->
+<section id="proof">
+  <div class="wrap">
+    <div class="label rv">06 / Proof</div>
+    <h2 class="rv">What people say.</h2>
+
+    <div class="quotes rv" style="margin-bottom:64px;">
+
+      <div class="quote">
+        <p>
+          "I had the pleasure of working with Abbas, and I highly recommend him for any frontend
+          developer role. Abbas is a quick learner who adapts easily to new project codebases and
+          is always open to suggestions for improvement. He is proactive in his work and never
+          hesitates to ask questions when unsure, which greatly enhances our projects."
+        </p>
+        <div class="quote-by">Bagus Gandhi Pranata</div>
+        <div class="quote-role">Front-End Developer · University of Wollongong</div>
+      </div>
+
+      <!-- REPLACE: swap this for the real founder quote from your UK logistics client -->
+      <div class="quote">
+        <p>
+          "Abbas took ownership of our internal operations at a time when everything was held
+          together with spreadsheets. He rebuilt the whole system, documented it, and it just
+          works. Our conversion rate went from single digits to over twenty percent."
+        </p>
+        <div class="quote-by">Founder</div>
+        <div class="quote-role">UK Logistics Company · Placeholder, replace with real quote</div>
+      </div>
+
+      <div class="quote">
+        <p>
+          "Clear communication, fast turnaround, and he actually understands the business problem
+          before writing code. We have worked with him on multiple projects and he is the first
+          person we call."
+        </p>
+        <div class="quote-by">Client</div>
+        <div class="quote-role">Freelance Client · Placeholder, replace with real quote</div>
+      </div>
+
+    </div>
+
+    <h2 class="rv">Milestones.</h2>
+    <div class="miles rv">
+
+      <div class="mile">
+        <div class="mile-yr">2019</div>
+        <div>
+          <div class="mile-t">First production role</div>
+          <div class="mile-d">Joined Psilocybin Alpha in New York as a junior web developer while still in university. First real exposure to Django, Flask, Docker, and cloud infrastructure.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2021</div>
+        <div>
+          <div class="mile-t">Graduated and went full-time</div>
+          <div class="mile-d">Completed a BSc in Electrical Engineering at UET Peshawar. Joined Spec Digital in London as a full-stack developer.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2022</div>
+        <div>
+          <div class="mile-t">Formalized the full-stack foundation</div>
+          <div class="mile-d">Completed a Udacity Nanodegree in Full Stack Web Development. Began moving production workloads to containerized deployments.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2023</div>
+        <div>
+          <div class="mile-t">Moved into operations and delivery</div>
+          <div class="mile-d">Took a technical operations and delivery role with a Singapore company. Started owning systems end to end rather than just features.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2024</div>
+        <div>
+          <div class="mile-t">Built and launched a CRM from zero</div>
+          <div class="mile-d">Joined a UK logistics company as the sole technical owner. Designed, built, and shipped a custom CRM. Conversions went from 2 to 3 per month up to 20 to 25. MoverSync grew out of this work.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2025</div>
+        <div>
+          <div class="mile-t">Went deep on platform and reliability</div>
+          <div class="mile-d">Built out a full DevOps, SRE, and platform lab. Kubernetes, Terraform, Helm, ArgoCD, Prometheus, Grafana, SLOs, and canary deployments. Earned EF SET C2 English certification.</div>
+        </div>
+      </div>
+
+      <div class="mile">
+        <div class="mile-yr">2026</div>
+        <div>
+          <div class="mile-t">Opened up to US and UK contracts</div>
+          <div class="mile-d">Refocused the practice on platform engineering for funded startups. Building SaaS products for underserved markets in parallel.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= FIT ================= -->
+<section id="fit">
+  <div class="wrap">
+    <div class="label rv">07 / Working together</div>
+    <h2 class="rv">The practical details.</h2>
+    <p class="lead rv" style="margin-bottom:36px;">
+      The things that actually determine whether a working relationship succeeds.
+    </p>
+
+    <div class="fit rv">
+      <div class="fit-cell">
+        <div class="fit-h">Timezone</div>
+        <p>
+          Based in Pakistan, <strong>UTC+5</strong>. I keep <strong>4 to 6 hours of overlap with
+          the UK</strong> and <strong>3 to 5 hours with US Eastern</strong>. I routinely work
+          until 2am PKT to cover US mornings, and I have done this for years.
+        </p>
+      </div>
+
+      <div class="fit-cell">
+        <div class="fit-h">Company fit</div>
+        <p>
+          Best fit is <strong>Seed to Series B</strong>, roughly <strong>10 to 200 people</strong>,
+          remote-first, with a real production workload. Teams that have infrastructure but no
+          dedicated person owning it. Teams that need someone senior who can operate without
+          being managed.
+        </p>
+      </div>
+
+      <div class="fit-cell">
+        <div class="fit-h">Culture fit</div>
+        <p>
+          I work well in <strong>async, written-first</strong> teams. I document by default.
+          I prefer <strong>blameless post-mortems</strong> over blame. I ask questions early
+          rather than guessing. I am direct without being difficult.
+        </p>
+      </div>
+
+      <div class="fit-cell">
+        <div class="fit-h">Startup fit</div>
+        <p>
+          I am comfortable with ambiguity. I have been the only technical person in the room
+          more than once. I can go from "what do you actually need" to shipped and monitored
+          without a lot of ceremony. I wear multiple hats without complaining.
+        </p>
+      </div>
+
+      <div class="fit-cell">
+        <div class="fit-h">How I engage</div>
+        <p>
+          I start with a <strong>30 day paid sprint</strong> so you can see real output before
+          committing to anything long term. No long contracts, no retainer lock-in, no
+          surprises. If it works, we continue. If it does not, you keep the work.
+        </p>
+      </div>
+
+      <div class="fit-cell">
+        <div class="fit-h">What I avoid</div>
+        <p>
+          Environments where infrastructure is an afterthought. Reactive on-call with no
+          runbooks. Approval chains that take days for a one line change. Roles that are
+          purely frontend or purely ticket-driven.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="label rv">08 / Contact</div>
+    <h2 class="rv">Let's talk.</h2>
+    <p class="lead rv">
+      If you have infrastructure that needs an owner, or a system that keeps breaking,
+      send me a message. I reply within a few hours during US and UK working hours.
+    </p>
+
+    <div class="links rv">
+      <a class="link-cell" href="https://www.linkedin.com/in/abbasaziz/" target="_blank" rel="noopener">
+        <div><div class="link-name">LinkedIn</div><div class="link-sub">in/abbasaziz</div></div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a class="link-cell" href="https://github.com/abbasaziz" target="_blank" rel="noopener">
+        <div><div class="link-name">GitHub</div><div class="link-sub">github.com/abbasaziz</div></div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a class="link-cell" href="https://abbas-aziz.notion.site/Engineering-Portfolio-Platform-Infrastructure-Automation-2e5b28ee41668002a5f9fede8438c935" target="_blank" rel="noopener">
+        <div><div class="link-name">Notion Portfolio</div><div class="link-sub">Case studies and deep dives</div></div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a class="link-cell" href="https://www.youtube.com/@abbasaziz" target="_blank" rel="noopener">
+        <div><div class="link-name">YouTube</div><div class="link-sub">Platform engineering walkthroughs</div></div>
+        <span class="link-arrow">→</span>
+      </a>
+      <button class="link-cell" id="copyEmail" type="button">
+        <div><div class="link-name">Email</div><div class="link-sub" id="emailText">Click to copy</div></div>
+        <span class="link-arrow">⧉</span>
+      </button>
+      <button class="link-cell" id="resumeBtn2" type="button">
+        <div><div class="link-name">Resume</div><div class="link-sub">View and download</div></div>
+        <span class="link-arrow">↓</span>
+      </button>
+    </div>
+
+    <div class="hero-cta rv" style="margin-top:40px;">
+      <a href="https://www.linkedin.com/in/abbasaziz/" target="_blank" rel="noopener" class="btn">Message me on LinkedIn →</a>
+      <button class="btn ghost" id="cmdOpen2">Open command palette</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year"></span> Abbas Aziz · Platform Engineer</span>
+    <span>Built with plain HTML, CSS, and JavaScript</span>
+  </div>
+</footer>
+
+<!-- ================= COMMAND PALETTE ================= -->
+<div class="cmd-wrap" id="cmdWrap">
+  <div class="cmd">
+    <input class="cmd-input" id="cmdInput" placeholder="Jump to a section, open a link, or run a command..." autocomplete="off" />
+    <div class="cmd-list" id="cmdList"></div>
+  </div>
+</div>
+
+<!-- ================= RESUME MODAL ================= -->
+<div class="modal" id="resumeModal" role="dialog" aria-modal="true" aria-label="Resume">
+  <div class="modal-card">
+    <div class="modal-bar">
+      <span class="modal-title">Resume</span>
+      <div class="modal-actions">
+        <button class="btn ghost small" id="printResume">Print / Save as PDF</button>
+        <a class="btn ghost small" href="resume.pdf" download>Download PDF</a>
+        <button class="icon-btn" id="closeResume" aria-label="Close">✕</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div id="resume">
+
+        <h1>Abbas Aziz</h1>
+        <div class="r-sub">Platform Engineer · Infrastructure, Automation, Reliability</div>
+        <div class="r-meta">
+          Abbottabad, Pakistan · Remote (US / UK hours)<br>
+          linkedin.com/in/abbasaziz · github.com/abbasaziz<br>
+          abbas-aziz.notion.site · moversync.co.uk
+        </div>
+
+        <h2>Summary</h2>
+        <p>
+          Platform engineer with five years across full-stack development and cloud infrastructure.
+          I build reliable, observable, cost-efficient systems and I am comfortable being the
+          person who owns them end to end. Experienced working directly with founders and
+          non-technical teams in the UK, US, and Singapore. Available for remote contract work.
+        </p>
+
+        <h2>Core Skills</h2>
+        <div class="r-tags">
+          <span>Kubernetes</span><span>Docker</span><span>Helm</span><span>Terraform</span>
+          <span>AWS</span><span>GCP</span><span>Azure</span><span>CI/CD</span>
+          <span>GitHub Actions</span><span>GitLab CI</span><span>ArgoCD</span><span>GitOps</span>
+          <span>Prometheus</span><span>Grafana</span><span>Loki</span><span>OpenTelemetry</span>
+          <span>SLO / SLI</span><span>Linux</span><span>Python</span><span>TypeScript</span>
+          <span>Node.js</span><span>React</span><span>PostgreSQL</span><span>MongoDB</span>
+          <span>Redis</span><span>REST APIs</span><span>n8n</span><span>Zapier</span>
+        </div>
+
+        <h2>Experience</h2>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Platform Engineer / Technical Operations</span>
+            <span class="r-role-date">Aug 2024 → Present</span>
+          </div>
+          <div class="r-role-co">Deen Removals and Storage · London, UK · Remote</div>
+          <ul>
+            <li>Sole owner of internal systems and cloud infrastructure for a fully remote UK logistics company.</li>
+            <li>Designed, built, and shipped a custom CRM covering lead capture, sales pipeline, and customer communication.</li>
+            <li>Rebuilt inbound lead handling and follow-up workflows, lifting monthly conversions from <strong>2 to 3 up to 20 to 25</strong>.</li>
+            <li>Built and maintained CI/CD pipelines, containerized services, and AWS deployments.</li>
+            <li>Introduced monitoring and alerting, cutting time to detect production issues to under a minute.</li>
+            <li>Wrote SOPs and documentation so operations continue without daily involvement.</li>
+          </ul>
+        </div>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Technical Operations and Delivery Manager</span>
+            <span class="r-role-date">Aug 2023 → Aug 2024</span>
+          </div>
+          <div class="r-role-co">Works · Singapore · Remote</div>
+          <ul>
+            <li>Owned delivery of internal product features end to end across technical and non-technical stakeholders.</li>
+            <li>Led implementation of operational workflows for recruitment and contract management.</li>
+            <li>Reduced manual handling by redesigning internal UI flows and backend coordination.</li>
+            <li>Supported scalability through backend coordination, database structuring, and deployment workflows.</li>
+          </ul>
+        </div>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Full Stack Delivery Engineer</span>
+            <span class="r-role-date">Nov 2022 → Dec 2023</span>
+          </div>
+          <div class="r-role-co">Spec Digital · London, UK · Remote</div>
+          <ul>
+            <li>Delivered client projects end to end, translating business needs into shipped features.</li>
+            <li>Containerized a monolith into services with Docker, cutting image size from roughly <strong>1.2GB to 350MB</strong>.</li>
+            <li>Deployed to AWS EC2 and ECS with automated rollback on failed health checks.</li>
+            <li>Improved API response times from roughly <strong>420ms to 180ms</strong> via query optimization and pooling.</li>
+            <li>Transitioned into infrastructure ownership, taking on Kubernetes and Terraform.</li>
+          </ul>
+        </div>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Junior Developer</span>
+            <span class="r-role-date">Feb 2021 → Nov 2022</span>
+          </div>
+          <div class="r-role-co">Spec Digital · London, UK · Remote</div>
+          <ul>
+            <li>Built backend services with Django, Flask, and REST APIs, plus React frontends.</li>
+            <li>Designed database models in PostgreSQL and MongoDB.</li>
+            <li>Worked with microservices, Docker, Git, and AWS services including EC2, ECS, CodeBuild, and CodePipeline.</li>
+            <li>Reduced app loading time by <strong>14 percent</strong> after cloud redeployment.</li>
+          </ul>
+        </div>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Junior Web Developer</span>
+            <span class="r-role-date">Sep 2019 → Jan 2021</span>
+          </div>
+          <div class="r-role-co">Psilocybin Alpha · New York, USA · Remote · Contract</div>
+          <ul>
+            <li>Built full-stack features with Django, Flask, REST APIs, jQuery, and React.</li>
+            <li>Worked extensively with SQL, PostgreSQL, and MongoDB on data modeling.</li>
+            <li>First production exposure to Docker, Git, AWS, and Azure.</li>
+          </ul>
+        </div>
+
+        <div class="r-role">
+          <div class="r-role-head">
+            <span class="r-role-title">Web Development Intern</span>
+            <span class="r-role-date">Jul 2019 → Sep 2019</span>
+          </div>
+          <div class="r-role-co">United States · Remote</div>
+          <ul>
+            <li>Contributed to content creation and technical website maintenance.</li>
+            <li>Improved frontend UI with CSS3 and HTML5.</li>
+          </ul>
+        </div>
+
+        <h2>Selected Projects</h2>
+        <ul>
+          <li><strong>MoverSync</strong> (moversync.co.uk) · Smart CRM SaaS for UK removals and logistics companies.</li>
+          <li><strong>DevOps / SRE Platform Lab</strong> · Kubernetes, Helm, Terraform, ArgoCD, Prometheus, SLOs, canary deploys.</li>
+          <li><strong>Custom CRM for UK Logistics</strong> · Full rebuild that lifted monthly conversions from 3 to 25.</li>
+          <li><strong>Cloud Cost Optimization Playbook</strong> · Terraform modules that cut one client's AWS bill by roughly 22 percent.</li>
+          <li><strong>Manufacturing Ops Suite</strong> · In development. SaaS for Pakistani manufacturers.</li>
+        </ul>
+
+        <h2>Education</h2>
+        <div class="r-two">
+          <div>
+            <div class="r-role-title">BSc Electrical Engineering</div>
+            <div class="r-role-co">University of Engineering and Technology, Peshawar · 2017 to 2021</div>
+          </div>
+          <div>
+            <div class="r-role-title">Nanodegree, Full Stack Web Development</div>
+            <div class="r-role-co">Udacity · 2022 to 2023</div>
+          </div>
+        </div>
+
+        <h2>Certifications</h2>
+        <ul>
+          <li>EF SET English Certificate, <strong>74/100 (C2 Proficient)</strong></li>
+          <li>Uniface Modeling Data Certificate · Rocket Software</li>
+        </ul>
+
+        <h2>Availability</h2>
+        <ul>
+          <li>Remote contract, 30 to 40 hours per week.</li>
+          <li>Timezone: UTC+5 with 4 to 6 hours overlap with UK and 3 to 5 hours with US Eastern.</li>
+          <li>Open to a 30 day paid sprint before any long-term commitment.</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var $ = function(s, c){ return (c || document).querySelector(s); };
+  var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ============ YEAR ============ */
+  $('#year').textContent = new Date().getFullYear();
+
+  /* ============ THEME ============ */
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('theme'); } catch(e){}
+  if (stored) root.setAttribute('data-theme', stored);
+  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.setAttribute('data-theme', 'dark');
+  }
+  $('#themeBtn').addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch(e){}
+    toast(next === 'dark' ? 'Dark mode' : 'Light mode');
+  });
+
+  /* ============ PROGRESS BAR ============ */
+  var progress = $('#progress');
+  var nav = $('#nav');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progress.style.width = pct + '%';
+    if (window.scrollY > 12) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ============ REVEAL ============ */
+  var rvObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        rvObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  $$('.rv').forEach(function(el, i){
+    el.style.transitionDelay = (Math.min(i, 6) * 45) + 'ms';
+    rvObserver.observe(el);
+  });
+
+  /* ============ NAV ACTIVE ============ */
+  var sections = $$('main section');
+  var navAnchors = $$('.nav-links a');
+  var navObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        var id = e.target.id;
+        navAnchors.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.25, rootMargin: '-20% 0px -55% 0px' });
+  sections.forEach(function(s){ navObserver.observe(s); });
+
+  /* ============ MOBILE MENU ============ */
+  var menuBtn = $('#menuBtn');
+  var navLinks = $('#navLinks');
+  menuBtn.addEventListener('click', function(){
+    navLinks.classList.toggle('open');
+  });
+  navAnchors.forEach(function(a){
+    a.addEventListener('click', function(){ navLinks.classList.remove('open'); });
+  });
+
+  /* ============ TYPING TERMINAL ============ */
+  var termBody = $('#termBody');
+  var lines = [
+    { t: 'p', v: '$ whoami' },
+    { t: 'c', v: 'abbas aziz' },
+    { t: 'p', v: '$ cat role.txt' },
+    { t: 'c', v: 'platform engineer · infrastructure · reliability' },
+    { t: 'p', v: '$ kubectl get experience' },
+    { t: 'o', v: '5 years   full-stack + cloud   100s of clients' },
+    { t: 'p', v: '$ terraform plan -out=career.tfplan' },
+    { t: 'o', v: 'Plan: 3 to add, 0 to change, 0 to destroy.' },
+    { t: 'p', v: '$ status --availability' }
+  ];
+
+  function buildLine(spec){
+    var div = document.createElement('div');
+    var cls = spec.t === 'p' ? 'p' : (spec.t === 'c' ? 'c' : 'o');
+    var span = document.createElement('span');
+    span.className = cls;
+    div.appendChild(span);
+    return { el: div, span: span, text: spec.v };
+  }
+
+  function typeAll(){
+    var i = 0;
+    function nextLine(){
+      if (i >= lines.length){
+        var last = document.createElement('div');
+        last.innerHTML = '<span class="c">available for contract</span> ' +
+                         '<span class="cursor"></span>';
+        termBody.appendChild(last);
+        return;
+      }
+      var spec = lines[i];
+      var built = buildLine(spec);
+      termBody.appendChild(built.el);
+      var chars = spec.v.split('');
+      var k = 0;
+      var speed = spec.t === 'p' ? 26 : 12;
+      function tick(){
+        if (k < chars.length){
+          built.span.textContent += chars[k];
+          k++;
+          setTimeout(tick, speed);
+        } else {
+          i++;
+          setTimeout(nextLine, spec.t === 'p' ? 90 : 220);
+        }
+      }
+      tick();
+    }
+    nextLine();
+  }
+  window.addEventListener('load', function(){ setTimeout(typeAll, 320); });
+
+  /* ============ SKILL TABS ============ */
+  $$('#skillTabs .tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      $$('#skillTabs .tab').forEach(function(t){ t.classList.remove('active'); });
+      $$('#skills .panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      var panel = document.getElementById(tab.getAttribute('data-panel'));
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  /* ============ ACCORDION ============ */
+  $$('.acc-head').forEach(function(head){
+    head.addEventListener('click', function(){
+      var item = head.parentElement;
+      var body = $('.acc-body', item);
+      var isOpen = item.classList.contains('open');
+
+      // close all
+      $$('.acc-item').forEach(function(it){
+        it.classList.remove('open');
+        $('.acc-body', it).style.maxHeight = '0px';
+      });
+
+      if (!isOpen){
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+  // open the first role by default
+  window.addEventListener('load', function(){
+    var first = $('.acc-item');
+    if (first){
+      first.classList.add('open');
+      var b = $('.acc-body', first);
+      b.style.maxHeight = b.scrollHeight + 'px';
+    }
+  });
+  window.addEventListener('resize', function(){
+    $$('.acc-item.open').forEach(function(it){
+      var b = $('.acc-body', it);
+      b.style.maxHeight = b.scrollHeight + 'px';
+    });
+  });
+
+  /* ============ PROJECT FILTERS ============ */
+  $$('#projFilters .tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      $$('#projFilters .tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      var f = tab.getAttribute('data-filter');
+      $$('#projGrid .card').forEach(function(card){
+        var types = (card.getAttribute('data-type') || '').split(' ');
+        var show = (f === 'all') || types.indexOf(f) !== -1;
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  /* ============ TOAST ============ */
+  var toastEl = $('#toast');
+  var toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 1800);
+  }
+
+  /* ============ COPY EMAIL ============ */
+  var EMAIL = 'hello@abbasaziz.dev'; // REPLACE with your real email
+  var emailText = $('#emailText');
+  if (emailText) emailText.textContent = EMAIL;
+
+  $('#copyEmail').addEventListener('click', function(){
+    function done(){ toast('Email copied to clipboard'); }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(EMAIL).then(done).catch(fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = EMAIL;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch(e){ toast('Copy failed'); }
+      document.body.removeChild(ta);
+    }
+  });
+
+  /* ============ RESUME MODAL ============ */
+  var modal = $('#resumeModal');
+  function openResume(){
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeResume(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  $('#resumeBtn').addEventListener('click', openResume);
+  var rb2 = $('#resumeBtn2');
+  if (rb2) rb2.addEventListener('click', openResume);
+  $('#closeResume').addEventListener('click', closeResume);
+  $('#printResume').addEventListener('click', function(){ window.print(); });
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeResume(); });
+
+  /* ============ COMMAND PALETTE ============ */
+  var cmdWrap = $('#cmdWrap');
+  var cmdInput = $('#cmdInput');
+  var cmdList = $('#cmdList');
+
+  var COMMANDS = [
+    { label: 'Home',            hint: 'section',  ico: '§', run: function(){ go('#home'); } },
+    { label: 'About',           hint: 'section',  ico: '§', run: function(){ go('#about'); } },
+    { label: 'Skills',          hint: 'section',  ico: '§', run: function(){ go('#skills'); } },
+    { label: 'Experience',      hint: 'section',  ico: '§', run: function(){ go('#work'); } },
+    { label: 'Projects',        hint: 'section',  ico: '§', run: function(){ go('#projects'); } },
+    { label: 'Apps',            hint: 'section',  ico: '§', run: function(){ go('#apps'); } },
+    { label: 'Proof',           hint: 'section',  ico: '§', run: function(){ go('#proof'); } },
+    { label: 'Working together',hint: 'section',  ico: '§', run: function(){ go('#fit'); } },
+    { label: 'Contact',         hint: 'section',  ico: '§', run: function(){ go('#contact'); } },
+    { label: 'View resume',     hint: 'action',   ico: '↓', run: function(){ closeCmd(); openResume(); } },
+    { label: 'Toggle theme',    hint: 'action',   ico: '◐', run: function(){ closeCmd(); $('#themeBtn').click(); } },
+    { label: 'Copy email',      hint: 'action',   ico: '⧉', run: function(){ closeCmd(); $('#copyEmail').click(); } },
+    { label: 'LinkedIn',        hint: 'link',     ico: '↗', run: function(){ open_('https://www.linkedin.com/in/abbasaziz/'); } },
+    { label: 'GitHub',          hint: 'link',     ico: '↗', run: function(){ open_('https://github.com/abbasaziz'); } },
+    { label: 'Notion portfolio',hint: 'link',     ico: '↗', run: function(){ open_('https://abbas-aziz.notion.site/Engineering-Portfolio-Platform-Infrastructure-Automation-2e5b28ee41668002a5f9fede8438c935'); } },
+    { label: 'YouTube',         hint: 'link',     ico: '↗', run: function(){ open_('https://www.youtube.com/@abbasaziz'); } },
+    { label: 'MoverSync',       hint: 'link',     ico: '↗', run: function(){ open_('https://moversync.co.uk'); } }
+  ];
+
+  function go(hash){
+    closeCmd();
+    var el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+  function open_(url){ closeCmd(); window.open(url, '_blank', 'noopener'); }
+
+  var filtered = COMMANDS.slice();
+  var selIndex = 0;
+
+  function renderCmd(){
+    cmdList.innerHTML = '';
+    if (!filtered.length){
+      var empty = document.createElement('div');
+      empty.className = 'cmd-item';
+      empty.innerHTML = '<span class="cmd-ico">·</span><span>No results</span>';
+      cmdList.appendChild(empty);
+      return;
+    }
+    filtered.forEach(function(c, i){
+      var d = document.createElement('div');
+      d.className = 'cmd-item' + (i === selIndex ? ' sel' : '');
+      d.innerHTML = '<span class="cmd-ico">' + c.ico + '</span>' +
+                    '<span>' + c.label + '</span>' +
+                    '<span class="cmd-k">' + c.hint + '</span>';
+      d.addEventListener('click', function(){ c.run(); });
+      d.addEventListener('mouseenter', function(){ selIndex = i; renderCmd(); });
+      cmdList.appendChild(d);
+    });
+  }
+
+  function openCmd(){
+    cmdWrap.classList.add('open');
+    cmdInput.value = '';
+    filtered = COMMANDS.slice();
+    selIndex = 0;
+    renderCmd();
+    setTimeout(function(){ cmdInput.focus(); }, 30);
+  }
+  function closeCmd(){
+    cmdWrap.classList.remove('open');
+  }
+
+  $('#cmdOpen').addEventListener('click', openCmd);
+  var cmdOpen2 = $('#cmdOpen2');
+  if (cmdOpen2) cmdOpen2.addEventListener('click', openCmd);
+
+  cmdWrap.addEventListener('click', function(e){ if (e.target === cmdWrap) closeCmd(); });
+
+  cmdInput.addEventListener('input', function(){
+    var q = cmdInput.value.toLowerCase().trim();
+    filtered = COMMANDS.filter(function(c){ return c.label.toLowerCase().indexOf(q) !== -1; });
+    selIndex = 0;
+    renderCmd();
+  });
+
+  document.addEventListener('keydown', function(e){
+    var isOpen = cmdWrap.classList.contains('open');
+
+    // Cmd/Ctrl + K
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
+      e.preventDefault();
+      isOpen ? closeCmd() : openCmd();
+      return;
+    }
+
+    // "/" opens palette when not typing in an input
+    if (!isOpen && e.key === '/' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)){
+      e.preventDefault();
+      openCmd();
+      return;
+    }
+
+    if (!isOpen) return;
+
+    if (e.key === 'Escape'){ closeCmd(); }
+    else if (e.key === 'ArrowDown'){
+      e.preventDefault();
+      selIndex = Math.min(selIndex + 1, filtered.length - 1);
+      renderCmd();
+    }
+    else if (e.key === 'ArrowUp'){
+      e.preventDefault();
+      selIndex = Math.max(selIndex - 1, 0);
+      renderCmd();
+    }
+    else if (e.key === 'Enter'){
+      e.preventDefault();
+      if (filtered[selIndex]) filtered[selIndex].run();
+    }
+  });
+
+  // Escape also closes the resume modal
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeResume();
+  });
+
+})();
+</script>
 </body>
-
 </html>
